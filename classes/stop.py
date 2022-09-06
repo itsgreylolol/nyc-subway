@@ -1,5 +1,5 @@
 from uuid import UUID, uuid4
-from classes import Passenger
+from classes import Passenger, Train
 
 
 class Stop(object):
@@ -8,6 +8,7 @@ class Stop(object):
     is_last: bool
     id: UUID
     passengers: list[Passenger]
+    current_train: Train
 
     def __init__(
         self,
@@ -21,3 +22,4 @@ class Stop(object):
 
         self.id = uuid4()
         self.passengers = []
+        self.current_train = None
