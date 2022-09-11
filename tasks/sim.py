@@ -1,12 +1,15 @@
-from networkx import compose_all
+from networkx import Graph, compose_all
 
-from objects import Line
+from util import get_turnstile_data
 
 
 class Simulation(object):
-    def __init__(self, lines: list[Line]) -> None:
-        self.map = compose_all(lines)
+    map: Graph
 
-    def run() -> None:
+    # def __init__(self) -> None:
+    # lines = init_lines()
+    # self.map = compose_all(lines)
+
+    def run(self) -> None:
         # placeholder
-        pass
+        get_turnstile_data()
