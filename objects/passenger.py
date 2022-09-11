@@ -1,6 +1,6 @@
 from uuid import UUID, uuid4
 
-from classes import Stop
+from objects import Stop
 
 
 class Passenger(object):

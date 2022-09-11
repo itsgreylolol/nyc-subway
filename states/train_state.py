@@ -1,4 +1,4 @@
-from classes import Stop, Train
+from objects import Stop, Train
 
 
 class TrainState(object):

@@ -4,8 +4,8 @@ import logging
 
 from uuid import UUID, uuid4
 
-from classes import Line, Stop, Passenger
-from states.train_state import TrainState
+from states import TrainState
+from objects import Line, Stop, Passenger
 
 
 class Train(object):
@@ -36,8 +36,9 @@ class Train(object):
         return len(self.passengers)
 
     @property
-    def state(self) -> None:
+    def state(self) -> TrainState:
         logging.info(f"Train is {type(self._state).__name__}")
+        return self._state
 
     @state.setter
     def state(self, state: TrainState) -> None:
