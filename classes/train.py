@@ -1,9 +1,9 @@
 import copy
 import logging
 import time
-
 from uuid import UUID, uuid4
-from classes import Passenger, Stop, Line
+
+from classes import Line, Passenger, Stop
 from states.train_state import TrainState
 
 

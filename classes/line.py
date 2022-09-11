@@ -1,5 +1,6 @@
 from uuid import UUID, uuid4
-from classes import Train, Stop
+
+from classes import Stop, Train
 
 
 class Line(object):
