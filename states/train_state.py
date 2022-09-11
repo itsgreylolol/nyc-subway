@@ -15,12 +15,12 @@ class TrainState(object):
     def arriving(self, stop: Stop) -> None:
         # TODO: implement state management for stop
         # TODO: implement logic to check stop for existing train
-        self.train.state = self.stopped()
+        self.train.state = self.stopped(stop)
 
     def stopped(self, stop: Stop) -> None:
         # TODO: implement state management for stop
         # TODO: implement boarding / de-baording logic
-        self.train.state = self.departing()
+        self.train.state = self.departing(stop)
 
     def departing(self, stop: Stop) -> None:
         # TODO: implement state management for stop
@@ -29,4 +29,5 @@ class TrainState(object):
 
     def in_transit(self) -> None:
         # TODO: implement timer delay for transit time
-        self.train.state = self.arriving()
+        stop = None  # TODO: implement logic for next stop
+        self.train.state = self.arriving(stop)
