@@ -2,8 +2,9 @@ import logging
 
 from uuid import UUID, uuid4
 
-from states import PassengerState
-from objects import Stop, Train
+from objects.stop import Stop
+from objects.train import Train
+from states.passenger_state import PassengerState
 
 
 class Passenger(object):

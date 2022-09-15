@@ -1,5 +1,7 @@
 import os
+import re
 import glob
+import logging
 
 import pandas as pd
 import requests
@@ -8,7 +10,9 @@ from bs4 import BeautifulSoup
 
 
 def get_turnstile_data() -> pd.DataFrame:
-    if not os.path.exists("./cache"):
+    pattern = re.compile(r"\sAV$")
+    if not os.path.exists("./cache/turnstile-all.ftr"):
+        logging.info("getting turnstile data")
         os.makedirs("./cache")
         headers = {
             "Access-Control-Allow-Origin": "*",
@@ -32,16 +36,22 @@ def get_turnstile_data() -> pd.DataFrame:
                     dfs.append(pd.read_csv(f"{base_url}{link.get('href')}"))
 
             df = pd.concat(dfs)
-            df.to_csv(f"./cache/turnstile-{year}.csv")
+            df.to_feather(df, f"./cache/turnstile-{year}.ftr")
             dfs = []
 
-        df = pd.concat(map(pd.read_csv, glob.glob(os.path.join("", "./cache/*.csv"))))
-        df = df[df.DESC == "REGULAR"]
-        files = glob.glob(os.path.join("", "./cache/*.csv"))
+        df = pd.concat(
+            map(pd.read_feather, glob.glob(os.path.join("", "./cache/*.ftr")))
+        )
+        df = df[df["DESC"] == "REGULAR"]
+        df["STATION"] = df["STATION"].apply(lambda x: pattern.sub(" AVE", x))
+        files = glob.glob(os.path.join("", "./cache/*.ftr"))
         for f in files:
             os.remove(f)
-        df.to_csv("./cache/turnstile-all.csv")
-    else:
-        df = pd.read_csv("./cache/turnstile-all.csv")
 
-    return df
+        logging.info("writing turnstile data to local cache")
+        df.to_feather("./cache/turnstile-all.ftr")
+
+        return df
+    else:
+        logging.info("reading turnstile data")
+        return pd.read_feather("./cache/turnstile-all.ftr")

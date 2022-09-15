@@ -2,7 +2,7 @@ from uuid import UUID, uuid4
 
 from networkx import MultiDiGraph
 
-from objects import Stop
+from objects.stop import Stop
 
 
 class Line(MultiDiGraph):
