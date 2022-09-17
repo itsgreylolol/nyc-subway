@@ -1,11 +1,10 @@
-import os
-import re
 import glob
 import logging
+import os
+import re
 
 import pandas as pd
 import requests
-
 from bs4 import BeautifulSoup
 
 

@@ -2,30 +2,27 @@ from __future__ import annotations
 
 import logging
 
-from uuid import UUID, uuid4
-from typing import TYPE_CHECKING
-
-from objects import Base
-
-if TYPE_CHECKING:
-    from states import PassengerState
-    from objects import Stop, Train
+from objects.base_object import Base
+from objects.stop import Stop
+from objects.train import Train
+from states import PassengerState
 
 
 class Passenger(Base):
     source: Stop
     dest: Stop
     current: Stop
-    id: UUID
     _state: PassengerState
 
-    def __init__(self, source: Stop, dest: Stop, state: PassengerState) -> None:
+    def __init__(
+        self, source: Stop, dest: Stop, state: PassengerState, *args, **kwargs
+    ) -> None:
+        super().__init__(*args, **kwargs)
         self.source = source
         self.dest = dest
         self.state = state
 
         self.current = source
-        self.id = uuid4()
 
     @property
     def state(self) -> PassengerState:

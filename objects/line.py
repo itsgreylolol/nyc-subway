@@ -1,21 +1,36 @@
 from __future__ import annotations
 
-from uuid import UUID, uuid4
-from typing import TYPE_CHECKING
+from networkx import MultiDiGraph
 
-from objects import Base
-
-if TYPE_CHECKING:
-    from objects import Stop
+from objects.base_object import Base
+from objects.stop import Stop
 
 
-class Line(Base):
+class Line(MultiDiGraph, Base):
     name: str
-    id: UUID
     stops: list[Stop]
 
-    def __init__(self, name: str, stops: list[Stop]) -> None:
-        super().__init__()
-        self.stops = stops
-        self.name = name
-        self.id = uuid4()
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self.stops = kwargs.pop("stops", [])
+        self.name = kwargs.pop("name", None)
+
+        self.add_nodes_from(self.stops)
+        self.add_edges_from(
+            [
+                (stop, self.stops[index + 1])
+                for index, stop in enumerate(self.stops)
+                if index != (len(self.stops) - 1)
+            ]
+        )
+        self.stops.reverse()
+
+        self.add_edges_from(
+            [
+                (stop, self.stops[index + 1])
+                for index, stop in enumerate(self.stops)
+                if index != (len(self.stops) - 1)
+            ]
+        )
+
+        self.stops.reverse()

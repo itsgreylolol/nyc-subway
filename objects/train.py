@@ -1,17 +1,14 @@
 from __future__ import annotations
 
 import copy
-import time
 import logging
+import time
 
-from uuid import UUID, uuid4
-from typing import TYPE_CHECKING
-
-from objects import Base
-
-if TYPE_CHECKING:
-    from states import TrainState
-    from objects import Line, Stop, Passenger
+from objects.base_object import Base
+from objects.line import Line
+from objects.passenger import Passenger
+from objects.stop import Stop
+from states import TrainState
 
 
 class Train(Base):
@@ -19,19 +16,20 @@ class Train(Base):
     max_passengers: int
     passengers: list[Passenger]
     current_stop: Stop
-    id: UUID
     open_places: int
     on_board: int
     _state: TrainState
 
-    def __init__(self, line: Line, max_passengers: int, state: TrainState) -> None:
+    def __init__(
+        self, line: Line, max_passengers: int, state: TrainState, *args, **kwargs
+    ) -> None:
+        super().__init__(*args, **kwargs)
         self.line = line
         self.max_passengers = max_passengers
         self.state = state
 
         self.passengers = []
         self.current_stop = self.line.stops[0]
-        self.id = uuid4()
 
     @property
     def open_places(self) -> int:

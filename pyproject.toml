@@ -5,6 +5,3 @@ include = '\.pyi?$'
 
 [tool.isort]
 profile = "black"
-length_sort = true
-line_length = 88
-lines_between_types = 1
