@@ -1,7 +1,6 @@
 import glob
 import logging
 import os
-import re
 
 import pandas as pd
 import requests
@@ -9,7 +8,6 @@ from bs4 import BeautifulSoup
 
 
 def get_turnstile_data() -> pd.DataFrame:
-    pattern = re.compile(r"\sAV$")
     if not os.path.exists("./cache/turnstile-all.ftr"):
         logging.info("getting turnstile data")
         os.makedirs("./cache")

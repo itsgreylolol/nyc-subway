@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from networkx import MultiDiGraph
 
 from objects.base_object import Base
