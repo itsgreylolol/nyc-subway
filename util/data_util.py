@@ -43,7 +43,6 @@ def get_turnstile_data() -> pd.DataFrame:
             map(pd.read_feather, glob.glob(os.path.join("", "./cache/*.ftr")))
         )
         df = df[df["DESC"] == "REGULAR"]
-        df["STATION"] = df["STATION"].apply(lambda x: pattern.sub(" AVE", x))
         files = glob.glob(os.path.join("", "./cache/*.ftr"))
         for f in files:
             os.remove(f)
