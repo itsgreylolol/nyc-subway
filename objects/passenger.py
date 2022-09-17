@@ -1,13 +1,18 @@
+from __future__ import annotations
+
 import logging
 
 from uuid import UUID, uuid4
+from typing import TYPE_CHECKING
 
-from objects.stop import Stop
-from objects.train import Train
-from states.passenger_state import PassengerState
+from objects import Base
+
+if TYPE_CHECKING:
+    from states import PassengerState
+    from objects import Stop, Train
 
 
-class Passenger(object):
+class Passenger(Base):
     source: Stop
     dest: Stop
     current: Stop

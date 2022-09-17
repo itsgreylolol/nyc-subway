@@ -1,16 +1,20 @@
+from __future__ import annotations
+
 import copy
 import time
 import logging
 
 from uuid import UUID, uuid4
+from typing import TYPE_CHECKING
 
-from objects.line import Line
-from objects.stop import Stop
-from objects.passenger import Passenger
-from states.train_state import TrainState
+from objects import Base
+
+if TYPE_CHECKING:
+    from states import TrainState
+    from objects import Line, Stop, Passenger
 
 
-class Train(object):
+class Train(Base):
     line: Line
     max_passengers: int
     passengers: list[Passenger]

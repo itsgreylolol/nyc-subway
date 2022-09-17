@@ -1,8 +1,6 @@
 import time
 
-from objects.stop import Stop
-from objects.train import Train
-from objects.passenger import Passenger
+from objects import Stop, Train, Passenger
 
 
 class PassengerState(object):
