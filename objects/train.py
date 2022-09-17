@@ -8,7 +8,7 @@ from objects.base_object import Base
 from objects.line import Line
 from objects.passenger import Passenger
 from objects.stop import Stop
-from states import TrainState
+from states.train_state import TrainState
 
 
 class Train(Base):

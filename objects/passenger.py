@@ -5,7 +5,7 @@ import logging
 from objects.base_object import Base
 from objects.stop import Stop
 from objects.train import Train
-from states import PassengerState
+from states.passenger_state import PassengerState
 
 
 class Passenger(Base):

@@ -1,7 +1,7 @@
 import logging
 import sys
 
-from tasks import Simulation
+from tasks.sim import Simulation
 
 
 def main():
