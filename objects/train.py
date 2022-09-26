@@ -2,15 +2,15 @@ import copy
 import logging
 import time
 
-from objects.base_object import Base
-from objects.line import Line
+from objects.base_object import BaseObject
 from objects.passenger import Passenger
 from objects.stop import Stop
+from objects.track import Track
 from states.train_state import TrainState
 
 
-class Train(Base):
-    line: Line
+class Train(BaseObject):
+    track: Track
     max_passengers: int
     passengers: list[Passenger]
     current_stop: Stop
@@ -19,15 +19,15 @@ class Train(Base):
     _state: TrainState
 
     def __init__(
-        self, line: Line, max_passengers: int, state: TrainState, *args, **kwargs
+        self, track: Track, max_passengers: int, state: TrainState, *args, **kwargs
     ) -> None:
         super().__init__(*args, **kwargs)
-        self.line = line
+        self.track = track
         self.max_passengers = max_passengers
         self.state = state
 
         self.passengers = []
-        self.current_stop = self.line.stops[0]
+        self.current_stop = self.track.stops[0]
 
     @property
     def open_places(self) -> int:
@@ -91,7 +91,7 @@ class Train(Base):
         return out_passengers
 
     async def depart(self) -> None:
-        next_stop_index = self.line.stops.index(self.current_stop)
+        next_stop_index = self.track.stops.index(self.current_stop)
 
         self.current_stop = None
 

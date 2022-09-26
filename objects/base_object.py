@@ -2,7 +2,7 @@ from abc import ABC
 from uuid import UUID, uuid4
 
 
-class Base(ABC):
+class BaseObject(ABC):
     """Base class for all objects within the map
 
     Attributes:
