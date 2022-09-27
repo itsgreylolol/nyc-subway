@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from uuid import UUID, uuid4
 
 
@@ -40,3 +40,7 @@ class Base(ABC):
     def __hash__(self) -> int:
         """Custom hashing, just in case"""
         return hash(tuple(sorted(self.__dict__.items())))
+
+    @abstractmethod
+    async def start(self) -> None:
+        pass

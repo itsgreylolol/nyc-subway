@@ -1,12 +1,13 @@
+import asyncio
 import logging
 import sys
 
 from tasks.sim import Simulation
 
 
-def main():
+async def main():
     sim = Simulation()
-    sim.run()
+    await sim.run()
 
 
 if __name__ == "__main__":
@@ -15,4 +16,4 @@ if __name__ == "__main__":
         format="%(asctime)s [%(levelname)s] %(message)s",
         handlers=[logging.StreamHandler(sys.stdout)],
     )
-    main()
+    asyncio.run(main())

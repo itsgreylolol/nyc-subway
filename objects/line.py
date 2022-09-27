@@ -32,3 +32,7 @@ class Line(MultiDiGraph, Base):
         )
 
         self.stops.reverse()
+
+    async def start(self) -> None:
+        # TODO: Does this need an init?
+        pass

@@ -26,3 +26,10 @@ class Stop(Base):
 
         self.passengers = []
         self.current_train = None
+
+    async def start(self) -> None:
+        # TODO: how do we init the train at this stop?
+        #       stop states?
+
+        # TODO: passenger generation handled here?
+        pass
