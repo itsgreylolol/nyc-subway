@@ -1,6 +1,6 @@
 from networkx import MultiDiGraph
 
-from enums.object_enums import Divison
+from enums.object_enums import Division
 from objects.base_object import BaseObject
 from objects.stop import Stop
 
@@ -8,7 +8,7 @@ from objects.stop import Stop
 class Track(MultiDiGraph, BaseObject):
     name: str
     stops: list[Stop]
-    divison: Divison
+    divison: Division
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
@@ -35,3 +35,7 @@ class Track(MultiDiGraph, BaseObject):
         )
 
         self.stops.reverse()
+
+    async def start(self) -> None:
+        # TODO: Does this need an init?
+        pass

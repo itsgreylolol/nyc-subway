@@ -1,6 +1,4 @@
-import copy
 import logging
-import time
 
 from objects.base_object import BaseObject
 from objects.passenger import Passenger
