@@ -32,6 +32,7 @@ class Simulation(object):
         # TODO: Lines https://en.wikipedia.org/wiki/New_York_City_Subway_rolling_stock
         return compose_all(tracks)
 
-    def run(self) -> None:
-        # placeholder
+    async def run(self) -> None:
+        # TODO: implement gather
+        #       https://docs.python.org/3/library/asyncio-task.html#id6
         pass

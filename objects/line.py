@@ -8,3 +8,7 @@ class Line(BaseObject):
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
+
+    async def start(self) -> None:
+        # TODO: Does this need an init?
+        pass
