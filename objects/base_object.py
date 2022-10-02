@@ -39,7 +39,7 @@ class Base(ABC):
 
     def __hash__(self) -> int:
         """Custom hashing, just in case"""
-        return hash(tuple(sorted(self.__dict__.items())))
+        return hash(self.id)
 
     @abstractmethod
     async def start(self) -> None:
