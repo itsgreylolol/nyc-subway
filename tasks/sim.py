@@ -4,8 +4,8 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from networkx import Graph, compose_all, draw
 
-from objects.line import Line
 from objects.stop import Stop
+from objects.track import Track
 
 
 class Simulation(object):
@@ -23,11 +23,14 @@ class Simulation(object):
             data.apply(lambda x: Stop(x["NAME"], 0, x["LINES"]), axis=1)
         )
         line_names = set(chain.from_iterable(data["LINES"]))
-        lines = [
-            Line(name=x, stops=[stop for stop in stops if x in stop.lines])
+        tracks = [
+            Track(name=x, stops=[stop for stop in stops if x in stop.tracks])
             for x in line_names
         ]
-        return compose_all(lines)
+
+        # TODO: Track naming convention and mapping to lines
+        # TODO: Lines https://en.wikipedia.org/wiki/New_York_City_Subway_rolling_stock
+        return compose_all(tracks)
 
     async def run(self) -> None:
         # TODO: implement gather
