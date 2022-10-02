@@ -59,45 +59,6 @@ class Train(Base):
     def in_transit(self) -> None:
         self._state.in_transit()
 
-    def arrive(self, stop: Stop) -> list[Passenger]:
-        stop.current_train = self
-        self.current_stop = stop
-        boarding_passengers = [
-            passenger
-            for passenger in stop.passengers
-            if passenger.current.id == stop.id
-        ]
-        self.passengers.extend(boarding_passengers)
-
-        out_passengers = []
-
-        if stop.is_last:
-            out_passengers = self.empty()
-        else:
-            out_passengers = [
-                passenger
-                for passenger in self.passengers
-                if passenger.dest.id == stop.id
-            ]
-
-            for passenger in out_passengers:
-                self.passengers.remove(passenger)
-
-        # TODO: add logic to account for long running code above this
-        time.sleep(stop.time_to_stop)
-
-        stop.current_train = None
-        self.depart()
-        return out_passengers
-
-    async def depart(self) -> None:
-        next_stop_index = self.line.stops.index(self.current_stop)
-
-        self.current_stop = None
-
-    def empty(self) -> list[Passenger]:
-        out_passengers = copy.deepcopy(self.passengers)
-
-        self.passengers = []
-
-        return out_passengers
+    async def start(self) -> None:
+        # TODO: implement anything to be done before start
+        self._state.stopped(self.current_stop)

@@ -29,6 +29,7 @@ class Simulation(object):
         ]
         return compose_all(lines)
 
-    def run(self) -> None:
-        # placeholder
+    async def run(self) -> None:
+        # TODO: implement gather
+        #       https://docs.python.org/3/library/asyncio-task.html#id6
         pass

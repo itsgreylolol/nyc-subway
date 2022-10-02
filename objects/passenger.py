@@ -43,3 +43,7 @@ class Passenger(Base):
 
     def deboarding(self, stop: Stop) -> None:
         self._state.deboarding(stop)
+
+    async def start(self) -> None:
+        # TODO: init timer
+        self._state.waiting(self.source)
