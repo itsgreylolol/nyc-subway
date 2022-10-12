@@ -1,30 +1,39 @@
+from datetime import datetime
 from itertools import chain
 
-import pandas as pd
 from matplotlib import pyplot as plt
 from networkx import Graph, compose_all, draw
+from pandas import read_csv
 
+from objects.passenger import Passenger
 from objects.stop import Stop
 from objects.track import Track
+from util.passenger_util import PassengerFactory
+
+factory = PassengerFactory()
 
 
 class Simulation(object):
     map: Graph
+    stops: list[Stop]
+    passengers: list[Passenger]
 
-    def __init__(self) -> None:
+    def __init__(self, start_date: datetime, end_date: datetime) -> None:
         self.map = self._get_map()
+        self.passengers = factory.create_passengers(self.map, start_date, end_date)
         draw(self.map)
         plt.savefig("./cache/map.png")
 
     def _get_map(self) -> Graph:
-        data = pd.read_csv("./data/stops.csv")
+        data = read_csv("./data/stops.csv")
         data["LINES"] = data["LINE"].apply(lambda x: x.split("-"))
-        stops: list[Stop] = list(
-            data.apply(lambda x: Stop(x["NAME"], 0, x["LINES"]), axis=1)
-        )
+        self.stops = data.apply(
+            lambda x: Stop(x["NAME"], 0, x["LINES"]), axis=1
+        ).tolist()
+
         line_names = set(chain.from_iterable(data["LINES"]))
         tracks = [
-            Track(name=x, stops=[stop for stop in stops if x in stop.tracks])
+            Track(name=x, stops=[stop for stop in self.stops if x in stop.tracks])
             for x in line_names
         ]
 

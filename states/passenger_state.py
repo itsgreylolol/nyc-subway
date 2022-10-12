@@ -1,4 +1,4 @@
-import time
+from asyncio import sleep
 
 from objects.passenger import Passenger
 from objects.stop import Stop
@@ -27,13 +27,13 @@ class PassengerState(object):
         # TODO: implement global boarding time
         self.passenger.state = self.in_transit(train)
 
-    def in_transit(self, train: Train) -> None:
+    async def in_transit(self, train: Train) -> None:
         # this may just end up being a pass through?
         # may need logic for events during transit
         # but time in transit is handled by the train
         stop = None  # TODO: need logic for next stop
         while train.state != train.state.stopped:
-            time.sleep(0.01)
+            await sleep(0.01)
 
         # TODO: implement transfer logic
         if stop != self.passenger.dest:

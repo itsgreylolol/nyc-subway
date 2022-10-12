@@ -14,7 +14,7 @@ class Stop(BaseObject):
     time_to_stop: int
     tracks: list[str]
     passengers: list[Passenger]
-    current_train: Train
+    current_train: Train | None
 
     def __init__(
         self, name: str, time_to_stop: int, tracks: list[str], *args, **kwargs

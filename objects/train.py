@@ -1,4 +1,4 @@
-import logging
+from logging import info
 
 from objects.base_object import BaseObject
 from objects.passenger import Passenger
@@ -12,24 +12,19 @@ class Train(BaseObject):
     max_passengers: int
     passengers: list[Passenger]
     current_stop: Stop
-    open_places: int
-    on_board: int
     _state: TrainState
 
-    def __init__(
-        self, track: Track, max_passengers: int, state: TrainState, *args, **kwargs
-    ) -> None:
+    def __init__(self, track: Track, max_passengers: int, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.track = track
         self.max_passengers = max_passengers
-        self.state = state
 
         self.passengers = []
         self.current_stop = self.track.stops[0]
 
     @property
     def open_places(self) -> int:
-        return self.size - len(self.passengers)
+        return self.max_passengers - len(self.passengers)
 
     @property
     def on_board(self) -> int:
@@ -37,7 +32,7 @@ class Train(BaseObject):
 
     @property
     def state(self) -> TrainState:
-        logging.info(f"Train is {type(self._state).__name__}")
+        info(f"Train is {type(self._state).__name__}")
         return self._state
 
     @state.setter

@@ -1,16 +1,28 @@
-import glob
-import logging
-import os
+from datetime import datetime
+from glob import glob
+from logging import info
+from os import makedirs, remove
+from os.path import exists, join
 
-import pandas as pd
-import requests
 from bs4 import BeautifulSoup
+from pandas import DataFrame, concat, read_csv, read_feather, to_datetime
+from requests import get
 
 
-def get_turnstile_data() -> pd.DataFrame:
-    if not os.path.exists("./cache/turnstile-all.ftr"):
-        logging.info("getting turnstile data")
-        os.makedirs("./cache")
+class DataLoader:
+    def get_turnstile_data(self) -> DataFrame:
+        if not exists("./cache/turnstile-all.ftr"):
+            info("getting turnstile data")
+            df = self._download()
+        else:
+            info("reading turnstile data")
+            df = read_feather("./cache/turnstile-all.ftr")
+
+        return self._transform(df)
+
+    @staticmethod
+    def _download() -> DataFrame:
+        makedirs("./cache", exist_ok=True)
         headers = {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "GET",
@@ -20,34 +32,42 @@ def get_turnstile_data() -> pd.DataFrame:
         }
         base_url = "http://web.mta.info/developers/"
         url = f"{base_url}turnstile.html"
-        req = requests.get(url, headers)
+        req = get(url, headers)
 
         dfs = []
         soup = BeautifulSoup(req.content, "html.parser")
         links = soup.select(".span-84.last a")
-        good_years = ["2022", "2021", "2020", "2019", "2018", "2017", "2016", "2015"]
+        good_years = range(2015, datetime.now().year + 1)
 
         for year in good_years:
             for link in links:
-                if year in link.text:
-                    dfs.append(pd.read_csv(f"{base_url}{link.get('href')}"))
+                if str(year) in link.text:
+                    dfs.append(read_csv(f"{base_url}{link.get('href')}"))
 
-            df = pd.concat(dfs)
-            df.to_feather(df, f"./cache/turnstile-{year}.ftr")
+            df = concat(dfs).reset_index()
+            df.to_feather(f"./cache/turnstile-{year}.ftr")
             dfs = []
 
-        df = pd.concat(
-            map(pd.read_feather, glob.glob(os.path.join("", "./cache/*.ftr")))
-        )
+        df = concat(map(read_feather, glob(join("", "./cache/*.ftr"))))
         df = df[df["DESC"] == "REGULAR"]
-        files = glob.glob(os.path.join("", "./cache/*.ftr"))
+        files = glob(join("", "./cache/*.ftr"))
         for f in files:
-            os.remove(f)
+            remove(f)
 
-        logging.info("writing turnstile data to local cache")
-        df.to_feather("./cache/turnstile-all.ftr")
+        info("writing turnstile data to local cache")
+        df.reset_index(drop=True).to_feather("./cache/turnstile-all.ftr")
 
         return df
-    else:
-        logging.info("reading turnstile data")
-        return pd.read_feather("./cache/turnstile-all.ftr")
+
+    @staticmethod
+    def _transform(df: DataFrame) -> DataFrame:
+        # TODO: needs entry/exit delta
+        df["DATETIME_STR"] = df.apply(lambda x: f"{x['DATE']} {x['TIME']}", axis=1)
+        df["DATETIME"] = to_datetime(df["DATETIME_STR"], format="%m/%d/%Y %H:%M:%S")
+        df.sort_values("DATETIME", inplace=True)
+
+        # needs grouping
+        df["ENTRY_DELTA"] = df["ENTRIES"].diff()
+        df["EXIT_DELTA"] = df["EXITS"].diff()
+
+        return df
