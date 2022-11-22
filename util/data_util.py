@@ -62,13 +62,16 @@ class DataLoader:
 
     @staticmethod
     def _transform(df: DataFrame) -> DataFrame:
-        # TODO: needs entry/exit delta
+        df.columns = df.columns.str.strip()
+
         df["DATETIME_STR"] = df.apply(lambda x: f"{x['DATE']} {x['TIME']}", axis=1)
         df["DATETIME"] = to_datetime(df["DATETIME_STR"], format="%m/%d/%Y %H:%M:%S")
-        df.sort_values("DATETIME", inplace=True)
 
-        # needs grouping
-        df["ENTRY_DELTA"] = df["ENTRIES"].diff()
-        df["EXIT_DELTA"] = df["EXITS"].diff()
+        # column errors?
+        df = (
+            df.sort_values("DATETIME")
+            .groupby(["STATION", "SCP"])
+            .agg({"ENTRIES": "diff", "EXITS": "diff"})
+        )
 
         return df
