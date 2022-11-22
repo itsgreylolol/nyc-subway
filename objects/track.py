@@ -1,8 +1,7 @@
 from networkx import MultiDiGraph
 
-from enums.object_enums import Division
-from objects.base_object import BaseObject
-from objects.stop import Stop
+from enums import Division
+from objects import BaseObject, Stop
 
 
 class Track(MultiDiGraph, BaseObject):
@@ -12,9 +11,9 @@ class Track(MultiDiGraph, BaseObject):
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        self.stops = kwargs.pop("stops", [])
-        self.name = kwargs.pop("name", None)
-        self.divison = kwargs.pop("division", None)
+        self.stops = kwargs.pop("stops", None) or []
+        self.name = kwargs.pop("name", None) or ""
+        self.divison = kwargs.pop("division", None) or Division.A
 
         self.add_nodes_from(self.stops)
         self.add_edges_from(

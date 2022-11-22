@@ -1,6 +1,12 @@
-from enums.object_enums import Division
-from objects.base_object import BaseObject
-from objects.track import Track
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+from enums import Division
+from objects import BaseObject
+
+if TYPE_CHECKING:
+    from objects import Track
 
 
 class Line(BaseObject):

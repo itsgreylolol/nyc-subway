@@ -7,7 +7,7 @@ from typing import Optional
 
 from typer import Argument, run
 
-from tasks.sim import Simulation
+from tasks import Simulation
 
 
 async def _main(start: datetime, end: datetime):

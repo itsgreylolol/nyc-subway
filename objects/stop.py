@@ -2,11 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from objects.base_object import BaseObject
+from objects import BaseObject
 
 if TYPE_CHECKING:
-    from objects.passenger import Passenger
-    from objects.train import Train
+    from objects import Passenger, Train
 
 
 class Stop(BaseObject):

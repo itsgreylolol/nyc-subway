@@ -1,10 +1,7 @@
 from logging import info
 
-from objects.base_object import BaseObject
-from objects.passenger import Passenger
-from objects.stop import Stop
-from objects.track import Track
-from states.train_state import TrainState
+from objects import BaseObject, Passenger, Stop, Track
+from states import TrainState
 
 
 class Train(BaseObject):
@@ -37,6 +34,7 @@ class Train(BaseObject):
 
     @state.setter
     def state(self, state: TrainState) -> None:
+        assert isinstance(state, TrainState)
         self._state = state
         self._state.train = self
 

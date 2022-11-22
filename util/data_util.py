@@ -3,6 +3,7 @@ from glob import glob
 from logging import info
 from os import makedirs, remove
 from os.path import exists, join
+from pathlib import Path
 
 from bs4 import BeautifulSoup
 from pandas import DataFrame, concat, read_csv, read_feather, to_datetime
@@ -16,7 +17,7 @@ class DataLoader:
             df = self._download()
         else:
             info("reading turnstile data")
-            df = read_feather("./cache/turnstile-all.ftr")
+            df = read_feather(Path("./cache/turnstile-all.ftr"))
 
         return self._transform(df)
 
@@ -45,17 +46,17 @@ class DataLoader:
                     dfs.append(read_csv(f"{base_url}{link.get('href')}"))
 
             df = concat(dfs).reset_index()
-            df.to_feather(f"./cache/turnstile-{year}.ftr")
+            df.to_feather(Path(f"./cache/turnstile-{year}.ftr"))
             dfs = []
 
-        df = concat(map(read_feather, glob(join("", "./cache/*.ftr"))))
+        df = concat(list(map(read_feather, glob(join("", "./cache/*.ftr")))))
         df = df[df["DESC"] == "REGULAR"]
         files = glob(join("", "./cache/*.ftr"))
         for f in files:
             remove(f)
 
         info("writing turnstile data to local cache")
-        df.reset_index(drop=True).to_feather("./cache/turnstile-all.ftr")
+        df.reset_index(drop=True).to_feather(Path("./cache/turnstile-all.ftr"))
 
         return df
 

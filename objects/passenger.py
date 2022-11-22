@@ -3,12 +3,11 @@ from __future__ import annotations
 from logging import info
 from typing import TYPE_CHECKING
 
-from objects.base_object import BaseObject
+from objects import BaseObject
 
 if TYPE_CHECKING:
-    from objects.stop import Stop
-    from objects.train import Train
-    from states.passenger_state import PassengerState
+    from objects import Stop, Train
+    from states import PassengerState
 
 
 class Passenger(BaseObject):
@@ -43,18 +42,18 @@ class Passenger(BaseObject):
         self._state = state
         self._state.passenger = self
 
-    def waiting(self, stop: Stop) -> None:
-        self._state.waiting(stop)
+    async def waiting(self, stop: Stop) -> None:
+        await self._state.waiting(stop)
 
-    def boarding(self, stop: Stop, train: Train) -> None:
-        self._state.boarding(stop, train)
+    async def boarding(self, stop: Stop, train: Train) -> None:
+        await self._state.boarding(stop, train)
 
     async def in_transit(self, train: Train) -> None:
         await self._state.in_transit(train)
 
-    def deboarding(self, stop: Stop) -> None:
-        self._state.deboarding(stop)
+    async def deboarding(self, stop: Stop) -> None:
+        await self._state.deboarding(stop)
 
     async def start(self) -> None:
         # TODO: init timer
-        self._state.waiting(self.source)
+        await self._state.waiting(self.source)

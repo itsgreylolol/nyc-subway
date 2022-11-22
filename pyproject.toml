@@ -5,3 +5,5 @@ include = '\.pyi?$'
 
 [tool.isort]
 profile = "black"
+float_to_top = true
+blocked_extensions = ["pyw", "pyc", "ipynb"]

@@ -3,9 +3,8 @@ from random import choice
 
 from networkx import Graph, has_path, shortest_path
 
-from objects.passenger import Passenger
-from objects.stop import Stop
-from util.data_util import DataLoader
+from objects import Passenger, Stop
+from util import DataLoader
 
 loader = DataLoader()
 
@@ -21,7 +20,7 @@ class PassengerFactory(object):
         df.to_csv("./cache/groups.csv")
 
         # TODO: add dates for getting number of passengers to create
-        passengers = []
+        passengers: list[Passenger] = []
 
         while len(passengers) < 10:
             source = choice(list(map.nodes))

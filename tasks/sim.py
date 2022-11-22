@@ -5,10 +5,8 @@ from matplotlib import pyplot as plt
 from networkx import Graph, compose_all, draw
 from pandas import read_csv
 
-from objects.passenger import Passenger
-from objects.stop import Stop
-from objects.track import Track
-from util.passenger_util import PassengerFactory
+from objects import Passenger, Stop, Track
+from util import PassengerFactory
 
 factory = PassengerFactory()
 
