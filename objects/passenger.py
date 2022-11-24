@@ -1,13 +1,14 @@
 from __future__ import annotations
 
+from asyncio import sleep
 from logging import info
 from typing import TYPE_CHECKING
 
+from enums import PassengerState
 from objects import BaseObject
 
 if TYPE_CHECKING:
     from objects import Stop, Train
-    from states import PassengerState
 
 
 class Passenger(BaseObject):
@@ -39,21 +40,55 @@ class Passenger(BaseObject):
 
     @state.setter
     def state(self, state: PassengerState) -> None:
+        assert isinstance(state, PassengerState)
         self._state = state
-        self._state.passenger = self
 
     async def waiting(self, stop: Stop) -> None:
-        await self._state.waiting(stop)
+        # note: this should be a minimum wait of time to transfer lines (edge weight)
+        # TODO: implement minimum waiting time
+        # TODO: implement global timer for passenger trip
+
+        self.state = PassengerState.WAITING
+        train = None  # TODO: implement logic for finding train boarded
+        self.run(self.boarding, {"stop": stop, "train": train})
 
     async def boarding(self, stop: Stop, train: Train) -> None:
-        await self._state.boarding(stop, train)
+        # TODO: implement global boarding time
+        self.state = PassengerState.BOARDING
+        self.run(self.in_transit, {"train": train})
 
     async def in_transit(self, train: Train) -> None:
-        await self._state.in_transit(train)
+        # this may just end up being a pass through?
+        # may need logic for events during transit
+        # but time in transit is handled by the train
+
+        self.state = PassengerState.IN_TRANSIT
+        stop = None  # TODO: need logic for next stop
+        while train.state != train.state.STOPPED:
+            await sleep(1)
+
+        # TODO: implement transfer logic
+        if stop != self.dest:
+            self.run(self.in_transit, {"train": train})
+
+        self.run(self.deboarding, {"stop": stop})
 
     async def deboarding(self, stop: Stop) -> None:
-        await self._state.deboarding(stop)
+        # TODO: implement transfer logic
+        self.state = PassengerState.DEBOARDING
+
+        if stop != self.dest:
+            self.run(self.waiting, {"stop": stop})
+        else:
+            self.exiting()
+
+    def exiting(self):
+        # TODO: stop passenger travel timer
+        # TODO: log metrics
+
+        self.state = PassengerState.EXITING
+        del self
 
     async def start(self) -> None:
         # TODO: init timer
-        await self._state.waiting(self.source)
+        self.run(self.deboarding, {"stop": self.source})

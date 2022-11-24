@@ -1,7 +1,7 @@
 from logging import info
 
+from enums import TrainState
 from objects import BaseObject, Passenger, Stop, Track
-from states import TrainState
 
 
 class Train(BaseObject):
@@ -36,20 +36,26 @@ class Train(BaseObject):
     def state(self, state: TrainState) -> None:
         assert isinstance(state, TrainState)
         self._state = state
-        self._state.train = self
 
     def arriving(self, stop: Stop) -> None:
-        self._state.arriving(stop)
+        # TODO: implement logic to ensure no train at stop
+        self.state = TrainState.ARRIVING
+        self.stopped(stop)
 
     def stopped(self, stop: Stop) -> None:
-        self._state.stopped(stop)
+        self.state = TrainState.STOPPED
+        self.departing(stop)
 
     def departing(self, stop: Stop) -> None:
-        self._state.departing(stop)
+        self.state = TrainState.DEPARTING
+        self.in_transit()
 
     def in_transit(self) -> None:
-        self._state.in_transit()
+        # TODO: implement logic to find next stop
+        self.state = TrainState.IN_TRANSIT
+        stop = None
+        self.arriving(stop)
 
     async def start(self) -> None:
         # TODO: implement anything to be done before start
-        self._state.stopped(self.current_stop)
+        self.stopped(self.current_stop)

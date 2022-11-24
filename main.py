@@ -5,6 +5,7 @@ from random import seed
 from sys import stdout
 from typing import Optional
 
+from numpy.random import seed as npseed
 from typer import Argument, run
 
 from tasks import Simulation
@@ -21,7 +22,9 @@ def main(
     date_format: str = Argument("%m/%d/%Y", help="date format of passed in datetimes"),
     random_seed: Optional[int] = Argument(None, help="global random seed"),
 ) -> None:
-    seed(random_seed)
+    seed(random_seed or 0)
+    npseed(random_seed or 0)
+
     start = (
         datetime.strptime(start_date, date_format)
         if start_date

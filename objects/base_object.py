@@ -1,5 +1,9 @@
 from abc import ABC, abstractmethod
+from asyncio import new_event_loop, set_event_loop
+from typing import Callable
 from uuid import UUID, uuid4
+
+from util import try_except
 
 
 class BaseObject(ABC):
@@ -44,3 +48,10 @@ class BaseObject(ABC):
     @abstractmethod
     async def start(self) -> None:
         pass
+
+    @try_except
+    def run(self, task: Callable, *args, **kwargs) -> None:
+        loop = new_event_loop()
+        set_event_loop(loop)
+        new_task = loop.create_task(task(*args, **kwargs))
+        loop.run_until_complete(new_task)

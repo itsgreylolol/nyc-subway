@@ -8,6 +8,7 @@ class Track(MultiDiGraph, BaseObject):
     name: str
     stops: list[Stop]
     divison: Division
+    direction: str
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
@@ -23,17 +24,9 @@ class Track(MultiDiGraph, BaseObject):
                 if index != (len(self.stops) - 1)
             ]
         )
-        self.stops.reverse()
 
-        self.add_edges_from(
-            [
-                (stop, self.stops[index + 1])
-                for index, stop in enumerate(self.stops)
-                if index != (len(self.stops) - 1)
-            ]
-        )
-
-        self.stops.reverse()
+        if len(self.stops) > 0:
+            self.direction = f"{self.stops[0].name} to {self.stops[-1].name}"
 
     async def start(self) -> None:
         # TODO: Does this need an init?

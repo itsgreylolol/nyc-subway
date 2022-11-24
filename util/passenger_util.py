@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from datetime import datetime
 from random import choice
 
@@ -16,8 +18,8 @@ class PassengerFactory(object):
         start_date: datetime,
         end_date: datetime,
     ) -> list[Passenger]:
-        df = loader.get_turnstile_data().groupby(["STATION", "DATE", "TIME"]).agg("sum")
-        df.to_csv("./cache/groups.csv")
+        # df = loader.get_turnstile_data().groupby(["STATION", "DATE", "TIME"]).agg("sum")
+        # df.to_csv("./cache/groups.csv")
 
         # TODO: add dates for getting number of passengers to create
         passengers: list[Passenger] = []
