@@ -3,11 +3,5 @@ line-length = 88
 target-version = ['py310']
 include = '\.pyi?$'
 
-[tool.isort]
-profile = "black"
-float_to_top = true
-blocked_extensions = ["pyw", "pyc", "ipynb"]
-skip = ["__init__.py"]
-
 [tool.mypy]
 ignore_missing_imports = true

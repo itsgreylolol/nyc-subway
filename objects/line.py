@@ -16,11 +16,11 @@ class Line(BaseObject):
     color: str
 
     def __init__(
-        self, name: str, tracks: list[Track], division: Division, color: str
+        self, name: str, tracks: list[Track], division: str, color: str
     ) -> None:
         self.name = name
         self.tracks = tracks
-        self.division = division
+        self.division = Division(division)
         self.color = color
 
     async def start(self) -> None:

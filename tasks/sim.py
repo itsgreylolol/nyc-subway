@@ -4,9 +4,10 @@ from itertools import chain
 from networkx import Graph, compose_all
 from pandas import DataFrame, Series, read_csv
 
+from util import PassengerFactory
 from objects import Line, Passenger, Stop, Track
 from tasks.debug import Debug
-from util import PassengerFactory
+
 
 factory = PassengerFactory()
 
@@ -52,7 +53,7 @@ class Simulation(object):
                 self._created_lines.add(line)
                 tracks = [x for x in self.tracks if line == x.name]
                 self.lines.append(
-                    Line(line, tracks, series["division"], str(series["color"]))
+                    Line(line, tracks, str(series["division"]), str(series["color"]))
                 )
 
     @staticmethod

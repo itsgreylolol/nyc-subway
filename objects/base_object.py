@@ -45,10 +45,6 @@ class BaseObject(ABC):
         """Custom hashing, just in case"""
         return hash(self.id)
 
-    def __iter__(self):
-        for key in self.__dict__:
-            yield key, getattr(self, key)
-
     @abstractmethod
     async def start(self) -> None:
         pass

@@ -14,7 +14,8 @@ class Track(MultiDiGraph, BaseObject):
         super().__init__(*args, **kwargs)
         self.stops = kwargs.pop("stops", None) or []
         self.name = kwargs.pop("name", None) or ""
-        self.divison = kwargs.pop("division", None) or Division.A
+        division_name = kwargs.pop("division", None) or "A"
+        self.divison = Division(division_name)
 
         self.add_nodes_from(self.stops)
         self.add_edges_from(
