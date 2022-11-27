@@ -9,6 +9,7 @@ from objects import BaseObject
 
 if TYPE_CHECKING:
     from objects import Stop, Train
+    from util import Timer
 
 
 class Passenger(BaseObject):
@@ -16,6 +17,7 @@ class Passenger(BaseObject):
     dest: Stop
     current: Stop
     path: list[Stop]
+    timer: Timer
     _state: PassengerState
 
     def __init__(
@@ -43,16 +45,15 @@ class Passenger(BaseObject):
         assert isinstance(state, PassengerState)
         self._state = state
 
-    async def waiting(self, stop: Stop) -> None:
+    def waiting(self, stop: Stop) -> None:
         # note: this should be a minimum wait of time to transfer lines (edge weight)
         # TODO: implement minimum waiting time
-        # TODO: implement global timer for passenger trip
 
         self.state = PassengerState.WAITING
         train = None  # TODO: implement logic for finding train boarded
         self.run(self.boarding, {"stop": stop, "train": train})
 
-    async def boarding(self, stop: Stop, train: Train) -> None:
+    def boarding(self, stop: Stop, train: Train) -> None:
         # TODO: implement global boarding time
         self.state = PassengerState.BOARDING
         self.run(self.in_transit, {"train": train})
@@ -73,7 +74,7 @@ class Passenger(BaseObject):
 
         self.run(self.deboarding, {"stop": stop})
 
-    async def deboarding(self, stop: Stop) -> None:
+    def deboarding(self, stop: Stop) -> None:
         # TODO: implement transfer logic
         self.state = PassengerState.DEBOARDING
 
@@ -82,13 +83,12 @@ class Passenger(BaseObject):
         else:
             self.exiting()
 
-    def exiting(self):
-        # TODO: stop passenger travel timer
+    def exiting(self) -> None:
         # TODO: log metrics
-
         self.state = PassengerState.EXITING
+        travel_time = self.timer.stop()
         del self
 
     async def start(self) -> None:
-        # TODO: init timer
-        self.run(self.deboarding, {"stop": self.source})
+        self.timer.start()
+        self.run(self.waiting, {"stop": self.current})

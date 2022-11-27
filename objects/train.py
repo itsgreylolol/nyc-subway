@@ -21,7 +21,7 @@ class Train(BaseObject):
 
     @property
     def open_places(self) -> int:
-        return self.max_passengers - len(self.passengers)
+        return self.max_passengers - self.on_board
 
     @property
     def on_board(self) -> int:

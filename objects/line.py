@@ -11,11 +11,17 @@ if TYPE_CHECKING:
 
 class Line(BaseObject):
     name: str
-    current_track: Track
+    tracks: list[Track]
     division: Division
+    color: str
 
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+    def __init__(
+        self, name: str, tracks: list[Track], division: Division, color: str
+    ) -> None:
+        self.name = name
+        self.tracks = tracks
+        self.division = division
+        self.color = color
 
     async def start(self) -> None:
         # TODO: Does this need an init?

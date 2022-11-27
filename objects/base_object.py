@@ -22,11 +22,11 @@ class BaseObject(ABC):
 
     def __repr__(self) -> str:
         """Override basic logging"""
-        return f"{self.__class__}: {self.__dict__}"
+        return f"{self.__class__.__name__}: {self.__dict__}"
 
     def __str__(self) -> str:
         """Override basic logging"""
-        return f"{self.__class__}: {self.__dict__}"
+        return f"{self.__class__.__name__}: {self.__dict__}"
 
     def __eq__(self, __o: object) -> bool:
         """Override equality function to be entirely based on id"""
@@ -44,6 +44,10 @@ class BaseObject(ABC):
     def __hash__(self) -> int:
         """Custom hashing, just in case"""
         return hash(self.id)
+
+    def __iter__(self):
+        for key in self.__dict__:
+            yield key, getattr(self, key)
 
     @abstractmethod
     async def start(self) -> None:
