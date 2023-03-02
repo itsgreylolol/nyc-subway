@@ -1,0 +1,38 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "description": "nyc-subway",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "preinstall": "npm install --package-lock-only --ignore-scripts && npx npm-force-resolutions"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itsgreylolol/nyc-subway.git"
+  },
+  "author": "itsgreylolol",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/itsgreylolol/nyc-subway/issues"
+  },
+  "homepage": "https://github.com/itsgreylolol/nyc-subway#readme",
+  "resolutions": {
+    "glob-parent": "6.0.2"
+  },
+  "overrides": {
+    "glob-parent": "6.0.2"
+  },
+  "devDependencies": {
+    "@types/gulp": "^4.0.10",
+    "@types/gulp-terser": "^1.2.1",
+    "@types/node": "^18.14.2",
+    "gulp": "^4.0.2",
+    "gulp-terser": "^2.1.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "npm-force-resolutions": "^0.0.10"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3"
+  }
+}
