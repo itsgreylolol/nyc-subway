@@ -1,0 +1,10 @@
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+
+[tool.isort]
+py_version = 311
+profile = "black"
+skip = ["__init__.py"]
+use_parentheses = true

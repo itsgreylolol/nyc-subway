@@ -1,0 +1,16 @@
+services:
+  data:
+    image: data
+    build:
+      context: .
+      dockerfile: data/Dockerfile
+  client:
+    image: client
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+  backend:
+    image: backend
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
