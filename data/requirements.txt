@@ -1,2 +1,5 @@
-pandas
-numpy
+aiohttp==3.8.4
+beautifulsoup4==4.12.2
+numpy==1.24.2
+pandas==2.0.0
+tqdm==4.65.0
