@@ -1,6 +1,5 @@
-from networkx import MultiDiGraph
-
 from enums.object_enums import Division
+from networkx import MultiDiGraph
 from objects.base_object import BaseObject
 from objects.stop import Stop
 

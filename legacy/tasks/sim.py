@@ -3,7 +3,6 @@ from itertools import chain
 import pandas as pd
 from matplotlib import pyplot as plt
 from networkx import Graph, compose_all, draw
-
 from objects.stop import Stop
 from objects.track import Track
 
