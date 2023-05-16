@@ -2,7 +2,11 @@ using Microsoft.EntityFrameworkCore;
 
 public class NYCSubwayContext : DbContext
 {
-    public DbSet<Stop> Stops { get; set; }
+    public DbSet<Stop> Stops => Set<Stop>();
+
+    public DbSet<Car> Cars => Set<Car>();
+
+    public DbSet<Train> Trains => Set<Train>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -13,8 +17,13 @@ public class NYCSubwayContext : DbContext
     {
         IConfigurationRoot configuration = new ConfigurationBuilder()
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-            .AddJsonFile("appsettings.json")
+            .AddJsonFile("appsettings.Development.json")
             .Build();
-        optionsBuilder.UseMySQL(configuration.GetConnectionString("NYCSubwayContext"));
+        optionsBuilder.UseMySQL(configuration.GetConnectionString("NYCSubwayContext") ?? "");
+    }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder.Properties<Coordinate>().HaveConversion<CoordinateConverter>();
     }
 }
